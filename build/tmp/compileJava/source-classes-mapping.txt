@@ -1,2 +1,8 @@
-Main.java
- Main
+molly/Molly.java
+ molly.Molly
+molly/Token.java
+ molly.Token
+molly/CommandHandler.java
+ molly.CommandHandler
+commands/Info.java
+ commands.Info
