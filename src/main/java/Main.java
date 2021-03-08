@@ -17,7 +17,7 @@ import java.util.*;
 public class Main extends ListenerAdapter {
 
     public static void main(String[] args) throws LoginException {
-        String token = "ODE4NTI5OTg0OTE3Mjc0NjM0.YEZZcw.AWlUktfpBir7ZgaMmhUnyD6F3Kw";
+        String token = "";
         JDA jda = JDABuilder.createDefault(token).build();
         jda.addEventListener(new Main());
     }
