@@ -26,17 +26,17 @@ public class Main extends ListenerAdapter {
 
         if (event.getAuthor().getName().equals("Marc")) {
             String msg = event.getMessage().getContentRaw();
-            String newMsg = "";
+            StringBuilder newMsg = new StringBuilder();
 
             for (int i = 0; i < msg.length(); i++) {
                 if (i%2 == 0) {
-                    newMsg += Character.toUpperCase(msg.charAt(i));
+                    newMsg.append(Character.toUpperCase(msg.charAt(i)));
                 } else {
-                    newMsg += msg.charAt(i);
+                    newMsg.append(msg.charAt(i));
                 }
             }
 
-            event.getMessage().reply(newMsg).queue();
+            event.getMessage().reply(newMsg.toString()).queue();
         }
 
         if (event.getMessage().getAuthor().getName().equals("TheSiebi")) {
