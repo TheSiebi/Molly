@@ -11,9 +11,6 @@ import java.util.Arrays;
  */
 public class Info extends Command {
 
-    private String[] args;
-    private GuildMessageReceivedEvent event;
-
     public Info (String[] args, GuildMessageReceivedEvent event) {
         super(args, event);
     }
