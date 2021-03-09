@@ -9,14 +9,13 @@ import java.util.Arrays;
 /**
  * An info panel with all available commands
  */
-public class Info {
+public class Info extends Command {
 
-    private final String[] args;
-    private final GuildMessageReceivedEvent event;
+    private String[] args;
+    private GuildMessageReceivedEvent event;
 
     public Info (String[] args, GuildMessageReceivedEvent event) {
-        this.args = Arrays.copyOfRange(args, 1, args.length);
-        this.event = event;
+        super(args, event);
     }
 
     /**
