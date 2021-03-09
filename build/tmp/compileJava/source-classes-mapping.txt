@@ -1,7 +1,7 @@
-molly/Molly.java
- molly.Molly
 molly/Token.java
  molly.Token
+molly/Molly.java
+ molly.Molly
 molly/CommandHandler.java
  molly.CommandHandler
 commands/Info.java
