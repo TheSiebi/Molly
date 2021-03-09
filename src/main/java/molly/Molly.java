@@ -30,6 +30,7 @@ public class Molly extends ListenerAdapter {
 
         // Add Listeners
         jda.addEventListener(new CommandHandler());
+        jda.addEventListener(new Molly());
 
         // Activity
         //jda.getPresence().setIdle(true);
@@ -45,7 +46,7 @@ public class Molly extends ListenerAdapter {
     @Override
     public void onGuildMemberUpdateNickname(@NotNull GuildMemberUpdateNicknameEvent event) {
         if (event.getMember().getUser() == jda.getSelfUser()) {
-            event.getMember().modifyNickname("molly.Molly").queue();
+            event.getMember().modifyNickname("Molly").queue();
         }
     }
 }

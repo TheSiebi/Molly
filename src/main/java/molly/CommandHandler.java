@@ -2,6 +2,7 @@ package molly;
 
 import commands.Info;
 import commands.Summon;
+import commands.Pong;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +37,7 @@ public class CommandHandler extends ListenerAdapter {
                     new Summon(args, event).run();
                     break;
                 case "ping":
-                    event.getChannel().sendMessage("Pong!").queue();
+                    new Pong(args, event).run();
                     break;
                 default:
                     System.out.println("test");
