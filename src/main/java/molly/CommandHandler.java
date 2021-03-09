@@ -19,6 +19,10 @@ public class CommandHandler extends ListenerAdapter {
      */
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
+        if (event.getAuthor().isBot()) { // ignore other bots and ourselves too
+            return;
+        }
+
         String[] args = event.getMessage().getContentRaw().split("\\s+");
         System.out.println(args[0]);
 
