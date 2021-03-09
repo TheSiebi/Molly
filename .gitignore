@@ -1,4 +1,5 @@
 .idea/
 /src/main/java/molly/Token.java
-*.class
 /out/
+/.gradle/
+/build/
