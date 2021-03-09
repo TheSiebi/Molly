@@ -1,2 +1,3 @@
 .idea/
-src/main/java/molly.Token.java
+/src/main/java/molly/Token.java
+*.class
