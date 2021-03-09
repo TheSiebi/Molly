@@ -26,6 +26,8 @@ public class Info extends Command {
 
         info.setColor(0x43cccc);
         info.addField("info", "Shows this manual.", false);
+        info.addField("ping", "Hit a ping-pong ball against Molly.", false);
+        info.addField("summon", "Invite your friends to a gaming session.", false);
 
         event.getChannel().sendTyping().queue();
         event.getChannel().sendMessage(info.build()).queue();

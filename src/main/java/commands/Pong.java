@@ -7,8 +7,18 @@ public class Pong extends Command {
         super(args, event);
     }
 
+    /**
+     * Molly's response to the incoming ping-pong ball.
+     */
     @Override
     public void run() {
-        event.getChannel().sendMessage("Pong!").queue();
+        event.getChannel().sendTyping().queue();
+
+        double x = Math.random();
+        if (x <= 0.1) {
+            event.getChannel().sendMessage("Ouch, that hurt!").queue();
+        } else {
+            event.getChannel().sendMessage("Pong!").queue();
+        }
     }
 }
