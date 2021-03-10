@@ -1,5 +1,7 @@
 package molly;
 
+import events.GuildMessageReactionAdd;
+import events.GuildMessageReactionRemove;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -34,6 +36,8 @@ public class Molly extends ListenerAdapter {
         // Add Listeners
         jda.addEventListener(new CommandHandler());
         jda.addEventListener(new Molly());
+        jda.addEventListener(new GuildMessageReactionAdd());
+        jda.addEventListener(new GuildMessageReactionRemove());
 
         // Activity
         //jda.getPresence().setIdle(true);
