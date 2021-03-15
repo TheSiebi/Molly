@@ -6,6 +6,8 @@ import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEve
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Random;
 
 public class GuildMessageReactionAdd extends ListenerAdapter {
