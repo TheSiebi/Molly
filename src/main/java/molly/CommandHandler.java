@@ -8,17 +8,18 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Locale;
-
 /**
  * The main instance handling user-inputted commands
  */
 public class CommandHandler extends ListenerAdapter {
 
+    public static String summonReaction = "U+2705";
+    public static String prefix = "/";
+
     /**
      * Creates a new Command object depending on the given input and runs it
      *
-     * @param event
+     * @param event holds reference to message which was received
      */
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
@@ -29,7 +30,7 @@ public class CommandHandler extends ListenerAdapter {
         String[] args = event.getMessage().getContentRaw().split("\\s+");
         System.out.println(args[0]);
 
-        if (args[0].startsWith(Molly.prefix)) { // Check if prefix is correct
+        if (args[0].startsWith(CommandHandler.prefix)) { // Check if prefix is correct
             switch (args[0].substring(1).toLowerCase()) {
                 case "info":
                     new Info(args, event).run();

@@ -1,5 +1,7 @@
 package commands;
 
+import molly.CommandHandler;
+import molly.Molly;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
@@ -18,7 +20,7 @@ public class Summon extends Command {
         invite.setDescription("To participate, react with the provided emoji below.");
 
         event.getChannel().sendTyping().queue();
-        event.getChannel().sendMessage(invite.build()).queue(message -> message.addReaction("U+2705").queue());
+        event.getChannel().sendMessage(invite.build()).queue(message -> message.addReaction(CommandHandler.summonReaction).queue());
 
         invite.clear();
     }

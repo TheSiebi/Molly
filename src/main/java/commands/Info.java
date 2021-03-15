@@ -1,8 +1,8 @@
 package commands;
 
+import molly.CommandHandler;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import molly.Molly;
 
 /**
  * An info panel with all available commands
@@ -20,7 +20,7 @@ public class Info extends Command {
         EmbedBuilder info = new EmbedBuilder();
 
         info.setTitle("List of commands");
-        info.setDescription("Required prefix: " +  "\"" + Molly.prefix + "\"");
+        info.setDescription("Required prefix: " +  "\"" + CommandHandler.prefix + "\"");
 
         info.setColor(0x43cccc);
         info.addField("info", "Shows this manual.", false);

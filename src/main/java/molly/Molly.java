@@ -15,7 +15,6 @@ import javax.security.auth.login.LoginException;
 public class Molly {
 
     public static JDA jda;
-    public static String prefix = "/";
 
     /**
      * Main method initializing Molly

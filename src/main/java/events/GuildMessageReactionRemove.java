@@ -1,5 +1,7 @@
 package events;
 
+import molly.CommandHandler;
+import molly.Molly;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +14,7 @@ public class GuildMessageReactionRemove extends ListenerAdapter {
 
         //System.out.println(event.getReactionEmote().getAsCodepoints());
 
-        if (event.getReactionEmote().getAsCodepoints().equals("U+2705") && !event.getUser().isBot()) {
+        if (event.getReactionEmote().getAsCodepoints().equals(CommandHandler.summonReaction) && !event.getUser().isBot()) {
             //System.out.println("Aww");
 
             String id = event.getMessageId();

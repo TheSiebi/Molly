@@ -1,5 +1,7 @@
 package events;
 
+import molly.CommandHandler;
+import molly.Molly;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -9,7 +11,7 @@ import java.util.Random;
 public class GuildMessageReactionAdd extends ListenerAdapter {
     @Override
     public void onGuildMessageReactionAdd(@NotNull GuildMessageReactionAddEvent event) {
-        if (event.getReactionEmote().getAsCodepoints().equals("U+2705") && !event.getUser().isBot()) {
+        if (event.getReactionEmote().getAsCodepoints().equals(CommandHandler.summonReaction) && !event.getUser().isBot()) {
             //System.out.println("Yay");
             String id = event.getMessageId();
 
