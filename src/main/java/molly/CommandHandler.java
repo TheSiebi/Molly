@@ -1,9 +1,6 @@
 package molly;
 
-import commands.Info;
-import commands.Sad;
-import commands.Summon;
-import commands.Pong;
+import commands.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -43,6 +40,9 @@ public class CommandHandler extends ListenerAdapter {
                     break;
                 case "sad":
                     new Sad(args, event).run();
+                    break;
+                case "annoy":
+                    new Annoy(args, event).run();
                     break;
                 default:
                     System.out.println("test");
