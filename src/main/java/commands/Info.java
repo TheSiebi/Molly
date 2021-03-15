@@ -4,8 +4,6 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import molly.Molly;
 
-import java.util.Arrays;
-
 /**
  * An info panel with all available commands
  */
