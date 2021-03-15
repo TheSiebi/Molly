@@ -43,9 +43,10 @@ public class CommandHandler extends ListenerAdapter {
                     break;
                 case "sad":
                     new Sad(args, event).run();
+                    break;
                 default:
                     System.out.println("test");
-                    event.getChannel().sendMessage("I don't know this command. Type **,info** for a list of all commands.").queue();
+                    event.getChannel().sendMessage("I don't know this command. Type ** " + CommandHandler.prefix +  "info** for a list of all commands.").queue();
             }
         }
     }

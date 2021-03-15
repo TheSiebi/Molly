@@ -20,7 +20,7 @@ public class GuildMessageReactionRemove extends ListenerAdapter {
             String id = event.getMessageId();
 
             event.getChannel().retrieveMessageById(id).queue(message -> {
-                //System.out.println(message.getEmbeds().get(0).getTitle().toLowerCase());
+                // System.out.println(message.getEmbeds().get(0).getTitle().toLowerCase());
                 if (!message.getEmbeds().isEmpty()) {
                     if (message.getEmbeds().get(0).getTitle().toLowerCase().endsWith("invites you to a a gaming session this evening!")) { // dirty fix
                         String leaver = event.getMember().getUser().getName();
