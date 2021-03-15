@@ -30,7 +30,7 @@ public class CommandHandler extends ListenerAdapter {
         System.out.println(args[0]);
 
         if (args[0].startsWith(Molly.prefix)) { // Check if prefix is correct
-            switch (args[0].substring(1).toLowerCase(Locale.ROOT)) {
+            switch (args[0].substring(1).toLowerCase()) {
                 case "info":
                     new Info(args, event).run();
                     break;

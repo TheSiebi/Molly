@@ -43,17 +43,4 @@ public class Molly extends ListenerAdapter {
         //jda.getPresence().setIdle(true);
         jda.getPresence().setActivity(Activity.streaming("your most embarrassing memories", "https://www.youtube.com/watch?v=dQw4w9WgXcQ"));
     }
-
-
-    /**
-     * Reset nickname back to 'Molly' when someone tries to change it.
-     *
-     * @param event
-     */
-    @Override
-    public void onGuildMemberUpdateNickname(@NotNull GuildMemberUpdateNicknameEvent event) {
-        if (event.getMember().getUser() == jda.getSelfUser()) {
-            event.getMember().modifyNickname("Molly").queue();
-        }
-    }
 }
