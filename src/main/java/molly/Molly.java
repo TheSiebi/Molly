@@ -2,6 +2,7 @@ package molly;
 
 import events.GuildMessageReactionAdd;
 import events.GuildMessageReactionRemove;
+import events.NicknameChangeEvent;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -38,6 +39,7 @@ public class Molly extends ListenerAdapter {
         jda.addEventListener(new Molly());
         jda.addEventListener(new GuildMessageReactionAdd());
         jda.addEventListener(new GuildMessageReactionRemove());
+        jda.addEventListener(new NicknameChangeEvent());
 
         // Activity
         //jda.getPresence().setIdle(true);
