@@ -17,7 +17,6 @@ public class Summon extends Command {
     public void run() {
         String author = event.getAuthor().getName();
         EmbedBuilder invite = new EmbedBuilder();
-        String id;
 
         invite.setColor(0xf542e6);
         invite.setTitle(author + " invites you to a a gaming session this evening!");
@@ -26,10 +25,6 @@ public class Summon extends Command {
         event.getChannel().sendTyping().queue();
         event.getChannel().sendMessage(invite.build()).queue(message -> {
             message.addReaction(CommandHandler.summonReaction).queue();
-            //add reaction log
-            HashMap<String, HashSet<String>> tmp = new HashMap<>();
-            tmp.put(message.getId(), new HashSet<String>());
-            CommandHandler.reactLog.put(message.getChannel().getId(), tmp);
         });
 
         invite.clear();
