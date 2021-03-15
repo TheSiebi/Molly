@@ -9,17 +9,25 @@ import java.util.Random;
 public class GuildMessageReactionRemove extends ListenerAdapter {
     @Override
     public void onGuildMessageReactionRemove(@NotNull GuildMessageReactionRemoveEvent event) {
+
+        //System.out.println(event.getReactionEmote().getAsCodepoints());
+
         if (event.getReactionEmote().getAsCodepoints().equals("U+2705") && !event.getUser().isBot()) {
-            System.out.println("Aww");
+            //System.out.println("Aww");
 
-            // TODO: Marc pls figure this out
-            //if (event.getMessageId().equals("id of invite")) {
-            String leaver = event.getMember().getUser().getName();
+            String id = event.getMessageId();
 
-            event.getChannel().sendTyping().queue();
-            event.getChannel().sendMessage(leaveMessage(leaver)).queue();
-            //}
+            event.getChannel().retrieveMessageById(id).queue(message -> {
+                //System.out.println(message.getEmbeds().get(0).getTitle().toLowerCase());
+                if (!message.getEmbeds().isEmpty()) {
+                    if (message.getEmbeds().get(0).getTitle().toLowerCase().endsWith("invites you to a a gaming session this evening!")) { // dirty fix
+                        String leaver = event.getMember().getUser().getName();
 
+                        event.getChannel().sendTyping().queue();
+                        event.getChannel().sendMessage(leaveMessage(leaver)).queue();
+                    }
+                }
+            });
         }
     }
 

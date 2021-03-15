@@ -1,6 +1,7 @@
 package molly;
 
 import commands.Info;
+import commands.Sad;
 import commands.Summon;
 import commands.Pong;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -39,6 +40,8 @@ public class CommandHandler extends ListenerAdapter {
                 case "ping":
                     new Pong(args, event).run();
                     break;
+                case "sad":
+                    new Sad(args, event).run();
                 default:
                     System.out.println("test");
                     event.getChannel().sendMessage("I don't know this command. Type **,info** for a list of all commands.").queue();
