@@ -1,8 +1,8 @@
 package commands;
 
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import net.dv8tion.jda.api.exceptions.ContextException;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -17,50 +17,65 @@ public class Annoy extends Command {
      */
     @Override
     public void run() {
-            // Setup
-            String victim = args[1];
+        if (args.length == 1) {
+            event.getChannel().sendMessage("Missing parameter: victim").queue();
+            return;
+        }
 
-            if (!victim.equalsIgnoreCase("TheSiebi")) {
-                Member vict;
+        // Setup
+        String victim = args[1];
 
+        //if (!victim.equalsIgnoreCase("TheSiebi")) {
+            Member vict;
+
+            try {
+                vict = event.getGuild().getMembersByName(victim, true).get(0);
+            } catch (IndexOutOfBoundsException e) {
+                event.getChannel().sendMessage("Unknown user " + victim).queue();
+                return;
+            }
+
+            AtomicReference<String> pingId = new AtomicReference<>();
+            AtomicReference<String> pongId = new AtomicReference<>();
+
+            event.getGuild().createVoiceChannel("Ping").queue(voiceChannel -> pingId.set(voiceChannel.getId()));
+            event.getGuild().createVoiceChannel("Pong").queue(voiceChannel -> pongId.set(voiceChannel.getId()));
+
+            // Busy wait until done
+            while (pongId.get() == null || pingId.get() == null) ;
+
+            // Annoy the poor fella
+            for (int i = 0; i < 5; i++) {
                 try {
-                    vict = event.getGuild().getMembersByName(victim, true).get(0);
-                } catch (IndexOutOfBoundsException e) {
-                    event.getChannel().sendMessage("Unknown user " + victim);
-                    return;
+                    event.getGuild().moveVoiceMember(vict, event.getGuild().getVoiceChannelById(pingId.get())).queue();
+                    Thread.sleep(100);
+                    event.getGuild().moveVoiceMember(vict, event.getGuild().getVoiceChannelById(pongId.get())).queue();
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    System.out.println("EXCEEEEPTION"); // exception handling like a pro
                 }
+            }
 
-                AtomicReference<String> pingId = new AtomicReference<>();
-                AtomicReference<String> pongId = new AtomicReference<>();
+            for (VoiceChannel vc : event.getGuild().getVoiceChannelsByName("ping", true)) {
+                System.out.println(vc.getName());
+                vc.delete().queue();
+            }
 
-                event.getGuild().createVoiceChannel("Ping").queue(voiceChannel -> pingId.set(voiceChannel.getId()));
-                event.getGuild().createVoiceChannel("Pong").queue(voiceChannel -> pongId.set(voiceChannel.getId()));
+            for (VoiceChannel vc : event.getGuild().getVoiceChannelsByName("pong", true)) {
+                System.out.println(vc.getName());
+                vc.delete().queue();
+            }
 
-                // Busy wait until done
-                while (pongId.get() == null || pingId.get() == null);
-
-                // Annoy the poor fella
-                for (int i = 0; i < 10; i++) {
-                    try {
-                        event.getGuild().moveVoiceMember(vict, event.getGuild().getVoiceChannelById(pingId.get())).queue();
-                        Thread.sleep(100);
-                        event.getGuild().moveVoiceMember(vict, event.getGuild().getVoiceChannelById(pongId.get())).queue();
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        System.out.println("EXCEEEEPTION");
-                    }
-                }
-
-                try {
+                /*try {
                     event.getGuild().getVoiceChannelById(pingId.get()).delete().queue();
                     event.getGuild().getVoiceChannelById(pongId.get()).delete().queue();
                 } catch (Exception e) { // idk what exception this throws
                     System.out.println("Channels were probably deleted manually");
-                }
+                }*/
 
-            } else {
-                event.getChannel().sendTyping().queue();
-                event.getChannel().sendMessage("Haha, you have no power here.").queue();
-            }
+        /*} else {
+            event.getChannel().sendTyping().queue();
+            event.getChannel().sendMessage("Haha, you have no power here.").queue();
+        }*/
     }
 }
