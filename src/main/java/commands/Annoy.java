@@ -23,7 +23,14 @@ public class Annoy extends Command {
         }
 
         // Setup
-        String victim = args[1];
+        StringBuilder sb = new StringBuilder();
+        sb.append(args[1]);
+
+        for (int i = 2; i < args.length; i++) {
+            sb.append(" " + args[i]);
+        }
+
+        String victim = sb.toString();
 
         if (!victim.equalsIgnoreCase("TheSiebi")) {
             Member vict;
