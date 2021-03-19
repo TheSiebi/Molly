@@ -16,7 +16,7 @@ public class Message {
      * @param msgID the ID of the "/summon" msg
      * @param channel the textchannel in which the "/summon" msg was sent
      */
-    public Message(String msgID, TextChannel channel){
+    public Message(String msgID, TextChannel channel) {
         this.summonMsgID = msgID;
         this.channel = channel;
         oldJoinMessageID = new HashMap<>();

@@ -1,5 +1,7 @@
 package commands;
 
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Emote;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class Pong extends Command {
@@ -18,7 +20,7 @@ public class Pong extends Command {
         if (x <= 0.1) {
             event.getChannel().sendMessage("Ouch, that hurt!").queue();
         } else {
-            event.getChannel().sendMessage("Pong!").queue();
+            event.getChannel().sendMessage("Pong! :ping_pong:").queue();
         }
     }
 }

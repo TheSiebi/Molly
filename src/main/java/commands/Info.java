@@ -17,6 +17,7 @@ public class Info extends Command {
      * Show the user an embedded view with a list of possible commands
      */
     public void run() {
+        event.getChannel().sendTyping().queue();
         EmbedBuilder info = new EmbedBuilder();
 
         info.setTitle("List of commands");
@@ -26,8 +27,9 @@ public class Info extends Command {
         info.addField("info", "Shows this manual.", false);
         info.addField("ping", "Hit a ping-pong ball against Molly.", false);
         info.addField("summon", "Invite your friends to a gaming session.", false);
+        info.addField("annoy [user]", "Annoys the specified user by moving him back and forth between two voice channels. " +
+                "User must be in a voice channel for this to work.", false);
 
-        event.getChannel().sendTyping().queue();
         event.getChannel().sendMessage(info.build()).queue();
         info.clear(); // saves system resources
     }

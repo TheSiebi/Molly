@@ -25,7 +25,7 @@ public class Annoy extends Command {
         // Setup
         String victim = args[1];
 
-        //if (!victim.equalsIgnoreCase("TheSiebi")) {
+        if (!victim.equalsIgnoreCase("TheSiebi")) {
             Member vict;
 
             try {
@@ -48,9 +48,9 @@ public class Annoy extends Command {
             for (int i = 0; i < 5; i++) {
                 try {
                     event.getGuild().moveVoiceMember(vict, event.getGuild().getVoiceChannelById(pingId.get())).queue();
-                    Thread.sleep(100);
+                    Thread.sleep(500);
                     event.getGuild().moveVoiceMember(vict, event.getGuild().getVoiceChannelById(pongId.get())).queue();
-                    Thread.sleep(100);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                     System.out.println("EXCEEEEPTION"); // exception handling like a pro
                 }
@@ -73,9 +73,9 @@ public class Annoy extends Command {
                     System.out.println("Channels were probably deleted manually");
                 }*/
 
-        /*} else {
+        } else {
             event.getChannel().sendTyping().queue();
             event.getChannel().sendMessage("Haha, you have no power here.").queue();
-        }*/
+        }
     }
 }
