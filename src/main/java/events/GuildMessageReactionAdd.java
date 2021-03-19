@@ -33,7 +33,7 @@ public class GuildMessageReactionAdd extends ListenerAdapter {
 
     private String joinMessage(String participant) {
         String[] messages = {
-                participant + " will join the gaming session!",
+                "**" + participant + "** will join the gaming session!",
                 "Guess who's gonna gift us his presence... It's **" + participant + "**!",
                 "YAY! I can't believe **" + participant + "** will manage to make it too!",
                 "Uhh... " + participant + " is gonna join too. Ok then."
