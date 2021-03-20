@@ -27,7 +27,7 @@ public class Info extends Command {
         info.addField("info", "Shows this manual.", false);
         info.addField("ping", "Hit a ping-pong ball against Molly.", false);
         info.addField("summon", "Invite your friends to a gaming session.", false);
-        info.addField("annoy [user]", "Annoys the specified user by moving him back and forth between two voice channels. " +
+        info.addField("annoy [user] -numberOfRepetitions", "Annoys the specified user by moving him back and forth between two voice channels. " +
                 "User must be in a voice channel for this to work.", false);
 
         event.getChannel().sendMessage(info.build()).queue();
