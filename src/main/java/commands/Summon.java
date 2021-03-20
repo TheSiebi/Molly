@@ -1,5 +1,6 @@
 package commands;
 
+import components.Message;
 import molly.CommandHandler;
 import molly.Molly;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -25,6 +26,14 @@ public class Summon extends Command {
         event.getChannel().sendTyping().queue();
         event.getChannel().sendMessage(invite.build()).queue(message -> {
             message.addReaction(CommandHandler.summonReaction).queue();
+
+            //Keep track of reaction messages
+            Message tmp = new Message(message.getId(), event.getChannel());
+            //delete previous summon message
+            if (CommandHandler.reactLog.get(event.getChannel().getId()) != null){
+                CommandHandler.reactLog.get(event.getChannel().getId()).delete();
+            }
+            CommandHandler.reactLog.put(event.getChannel().getId(), tmp);
         });
 
         invite.clear();

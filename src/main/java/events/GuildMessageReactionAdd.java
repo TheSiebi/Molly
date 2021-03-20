@@ -24,7 +24,10 @@ public class GuildMessageReactionAdd extends ListenerAdapter {
                         String participant = event.getMember().getUser().getName();
 
                         event.getChannel().sendTyping().queue();
-                        event.getChannel().sendMessage(joinMessage(participant)).queue();
+                        event.getChannel().sendMessage(joinMessage(participant)).queue(reactMessage -> {
+                            //keep track of reaction history
+                            CommandHandler.reactLog.get(message.getChannel().getId()).join(participant, reactMessage.getId());
+                        });
                     }
                 }
             });

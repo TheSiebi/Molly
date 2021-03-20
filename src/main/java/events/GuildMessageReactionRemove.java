@@ -26,7 +26,10 @@ public class GuildMessageReactionRemove extends ListenerAdapter {
                         String leaver = event.getMember().getUser().getName();
 
                         event.getChannel().sendTyping().queue();
-                        event.getChannel().sendMessage(leaveMessage(leaver)).queue();
+                        event.getChannel().sendMessage(leaveMessage(leaver)).queue(reactMessage -> {
+                            //keep track of reaction history
+                            CommandHandler.reactLog.get(message.getChannel().getId()).leave(leaver, reactMessage.getId());
+                        });
                     }
                 }
             });

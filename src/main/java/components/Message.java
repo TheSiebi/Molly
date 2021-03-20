@@ -27,15 +27,15 @@ public class Message {
      * To keep track of the users old join messages
      *
      * @param user the user which added a reaction
-     * @param msgID the message to which the user reacted
+     * @param msgID the reaction message
      */
     public void join(String user, String msgID){
-        if (!oldJoinMessageID.containsKey(user)){
-            oldJoinMessageID.put(user, msgID);
-        }
-        else{
-            channel.deleteMessageById(oldJoinMessageID.get(user));
-            oldJoinMessageID.replace(user, msgID);
+
+        oldJoinMessageID.put(user, msgID);
+
+        if(oldLeaveMessageID.containsKey(user)){
+            channel.deleteMessageById(oldLeaveMessageID.get(user)).queue();
+            oldLeaveMessageID.remove(user);
         }
     }
 
@@ -43,15 +43,31 @@ public class Message {
      * To keep track of the users old leave messages
      *
      * @param user the user which withdrew his reaction
-     * @param msgID the message to which the user reacted
+     * @param msgID the reaction message
      */
     public void leave(String user, String msgID){
-        if(!oldLeaveMessageID.containsKey(user)){
-            oldLeaveMessageID.put(user, msgID);
+
+        oldLeaveMessageID.put(user, msgID);
+
+        if (oldJoinMessageID.containsKey(user)){
+            channel.deleteMessageById(oldJoinMessageID.get(user)).queue();
+            oldJoinMessageID.remove(user);
         }
-        else{
-            channel.deleteMessageById(oldLeaveMessageID.get(user));
-            oldLeaveMessageID.replace(user, msgID);
+    }
+
+    /**
+     * Deletes the old summon message including all it's reaction messages
+     */
+    public void delete(){
+
+        for (String user : oldLeaveMessageID.keySet()){
+            channel.deleteMessageById(oldLeaveMessageID.get(user)).queue();
         }
+
+        for (String user : oldJoinMessageID.keySet()){
+            channel.deleteMessageById(oldJoinMessageID.get(user)).queue();
+        }
+
+        channel.deleteMessageById(summonMsgID).queue();
     }
 }

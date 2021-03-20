@@ -2,11 +2,11 @@ package molly;
 
 import commands.*;
 import components.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  * The main instance handling user-inputted commands
@@ -16,7 +16,7 @@ public class CommandHandler extends ListenerAdapter {
     public static String summonReaction = "U+2705";
     public static String prefix = "/";
     /**
-     * The first string represents the channel, the second the last summon message and the HashList the user who reacted
+     * The first string represents the channel, the Message keeps track of reactions
      */
     public static HashMap<String, Message> reactLog = new HashMap<>();
 
