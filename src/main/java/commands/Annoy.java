@@ -77,7 +77,7 @@ public class Annoy extends Command {
                 }
             }
 
-            event.getGuild().moveVoiceMember(vict, event.getGuild().getVoiceChannelById("323918708559052810"));
+            event.getGuild().moveVoiceMember(vict, event.getGuild().getVoiceChannelById("323918708559052810")).queue();
 
             for (VoiceChannel vc : event.getGuild().getVoiceChannelsByName("ping", true)) {
                 System.out.println(vc.getName());
