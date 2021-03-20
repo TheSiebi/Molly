@@ -1,7 +1,7 @@
 package events;
 
 import molly.CommandHandler;
-import molly.Molly;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -12,20 +12,18 @@ public class GuildMessageReactionRemove extends ListenerAdapter {
     @Override
     public void onGuildMessageReactionRemove(@NotNull GuildMessageReactionRemoveEvent event) {
 
-        //System.out.println(event.getReactionEmote().getAsCodepoints());
+        User remover = event.retrieveUser().complete(); // if we don't load the user first, it possibly returns null
 
-        if (event.getReactionEmote().getAsCodepoints().equals(CommandHandler.summonReaction) && !event.getUser().isBot()) {
-            //System.out.println("Aww");
+        if (event.getReactionEmote().getAsCodepoints().equals(CommandHandler.summonReaction) && !remover.isBot()) {
 
             String id = event.getMessageId();
+            event.getChannel().sendTyping().queue();
 
             event.getChannel().retrieveMessageById(id).queue(message -> {
-                // System.out.println(message.getEmbeds().get(0).getTitle().toLowerCase());
                 if (!message.getEmbeds().isEmpty()) {
                     if (message.getEmbeds().get(0).getTitle().toLowerCase().endsWith("invites you to a a gaming session this evening!")) { // dirty fix
-                        String leaver = event.getMember().getUser().getName();
+                        String leaver = remover.getName();
 
-                        event.getChannel().sendTyping().queue();
                         event.getChannel().sendMessage(leaveMessage(leaver)).queue(reactMessage -> {
                             //keep track of reaction history
                             CommandHandler.reactLog.get(message.getChannel().getId()).leave(leaver, reactMessage.getId());

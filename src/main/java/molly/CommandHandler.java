@@ -2,7 +2,6 @@ package molly;
 
 import commands.*;
 import components.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -51,8 +50,10 @@ public class CommandHandler extends ListenerAdapter {
                 case "annoy":
                     new Annoy(args, event).run();
                     break;
+                case "say":
+                    new Say(args, event).run();
+                    break;
                 default:
-                    System.out.println("test");
                     event.getChannel().sendMessage("I don't know this command. Type ** " + CommandHandler.prefix +  "info** for a list of all commands.").queue();
             }
         }

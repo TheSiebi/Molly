@@ -1,27 +1,26 @@
 package events;
 
 import molly.CommandHandler;
-import molly.Molly;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Random;
 
 public class GuildMessageReactionAdd extends ListenerAdapter {
     @Override
     public void onGuildMessageReactionAdd(@NotNull GuildMessageReactionAddEvent event) {
-        if (event.getReactionEmote().getAsCodepoints().equals(CommandHandler.summonReaction) && !event.getUser().isBot()) {
-            //System.out.println("Yay");
+
+        User adder = event.retrieveUser().complete(); // if we don't load the user first, it possibly returns null
+
+        if (event.getReactionEmote().getAsCodepoints().equals(CommandHandler.summonReaction) && !adder.isBot()) {
             String id = event.getMessageId();
 
             event.getChannel().retrieveMessageById(id).queue(message -> {
-                //System.out.println(message.getEmbeds().get(0).getTitle().toLowerCase());
                 if (!message.getEmbeds().isEmpty()) {
                     if (message.getEmbeds().get(0).getTitle().toLowerCase().endsWith("invites you to a a gaming session this evening!")) {
-                        String participant = event.getMember().getUser().getName();
+                        String participant = adder.getName();
 
                         event.getChannel().sendTyping().queue();
                         event.getChannel().sendMessage(joinMessage(participant)).queue(reactMessage -> {
