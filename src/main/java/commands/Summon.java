@@ -4,6 +4,7 @@ import components.Message;
 import molly.CommandHandler;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.requests.restaction.CommandReplyAction;
 import org.jetbrains.annotations.NotNull;
 
 public class Summon extends Command {
@@ -16,6 +17,10 @@ public class Summon extends Command {
      */
     @Override
     public void run() {
+        CommandReplyAction action = event.reply("Summoning friends...");
+        action.setEphemeral(true);
+        action.queue();
+
         String author = event.getUser().getName();
         EmbedBuilder invite = new EmbedBuilder();
 
@@ -36,7 +41,6 @@ public class Summon extends Command {
             CommandHandler.reactLog.put(event.getChannel().getId(), tmp);
         });
 
-        event.reply("Summon success").queue();
 
         invite.clear();
     }

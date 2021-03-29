@@ -7,10 +7,12 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Command;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.requests.restaction.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.security.auth.login.LoginException;
+import java.util.EnumSet;
 
 /**
  * The main JDA instance handling the bot
