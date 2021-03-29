@@ -1,18 +1,20 @@
 package commands;
 
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import org.jetbrains.annotations.NotNull;
+
 
 public class Sad extends Command {
 
-    public Sad(String[] args, GuildMessageReceivedEvent event) {
-        super(args, event);
+    public Sad(@NotNull SlashCommandEvent event) {
+        super(event);
     }
 
+    /**
+     * I'm sad. You're sad. We should all be sad about this event.
+     */
     @Override
     public void run() {
-        String author = event.getAuthor().getName();
-
-        event.getChannel().sendTyping().queue();
-        event.getChannel().sendMessage(author + " would like to let you know that he is sad about no one reacting to his invitation.").queue();
+        event.reply( "I would like to let you know that I am sad about no one reacting to my invitation.").queue();
     }
 }

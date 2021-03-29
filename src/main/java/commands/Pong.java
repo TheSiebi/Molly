@@ -1,12 +1,12 @@
 package commands;
 
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import net.dv8tion.jda.api.requests.RestAction;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import org.jetbrains.annotations.NotNull;
+
 
 public class Pong extends Command {
-    public Pong (String[] args, GuildMessageReceivedEvent event) {
-        super(args, event);
+    public Pong (@NotNull SlashCommandEvent event) {
+        super(event);
     }
 
     /**
@@ -14,19 +14,12 @@ public class Pong extends Command {
      */
     @Override
     public void run() {
-        event.getChannel().sendTyping().queue();
-
-        RestAction<Message> action;
         double x = Math.random();
 
         if (x <= 0.1) {
-            action = textChannel.sendMessage("Ouch, that hurt!");
+            event.reply("Ouch, that hurt!").queue();
         } else {
-            action = textChannel.sendMessage("Pong! :ping_pong:");
+            event.reply("Pong! :ping_pong:").queue();
         }
-
-        final long t0 = System.currentTimeMillis();
-        Message message = action.complete();
-        message.editMessage(message.getContentDisplay() + " (" + (System.currentTimeMillis() - t0) + " ms)").queue(); // End with queue() to not block the callback thread!
     }
 }

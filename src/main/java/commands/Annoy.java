@@ -2,15 +2,17 @@ package commands;
 
 import molly.Molly;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Annoy extends Command {
 
-    public Annoy(String[] args, GuildMessageReceivedEvent event) {
-        super(args, event);
+    public Annoy(@NotNull SlashCommandEvent event) {
+        super(event);
     }
 
     /**
@@ -18,20 +20,11 @@ public class Annoy extends Command {
      */
     @Override
     public void run() {
-
-        // Missing input
-        if (args.length == 1) {
-            textChannel.sendMessage("Missing parameter: victim").queue();
-            return;
-        }
+        event.reply("Let the fun begin... :smiling_imp:").queue();
 
         // Get user to annoy
-        StringBuilder sb = new StringBuilder();
-        sb.append(args[1]);
-        for (int i = 2; i < args.length; i++) {
-            sb.append(" ").append(args[i]);
-        }
-        String victim = sb.toString();
+        String victim = Objects.requireNonNull(Objects.requireNonNull(event.getOption("user")).getAsUser()).getName(); // object require nonnull-ception
+        System.out.println(victim);
 
         if (victim.equalsIgnoreCase("TheSiebi")) {
             Member vict;
@@ -56,26 +49,32 @@ public class Annoy extends Command {
             // Annoy the poor fella
             for (int i = 0; i < 5; i++) {
                 try {
-                    guild.moveVoiceMember(vict, event.getGuild().getVoiceChannelById(pingId.get())).submit().join();
+                    guild.moveVoiceMember(vict, guild.getVoiceChannelById(pingId.get())).submit().join();
                     Thread.sleep(250);
-                    guild.moveVoiceMember(vict, event.getGuild().getVoiceChannelById(pongId.get())).submit().join();
+                    guild.moveVoiceMember(vict, guild.getVoiceChannelById(pongId.get())).submit().join();
                     Thread.sleep(250);
-                } catch (Exception e) {}
+                } catch (IllegalStateException e) {
+                    Molly.logger.error("User " + vict + " not in VC while being annoyed");
+                    break;
+                } catch (InterruptedException e) {
+                    Molly.logger.error("Thread was interrupted");
+                    break;
+                }
             }
 
             try {
-                CompletableFuture<Void> action = event.getGuild().moveVoiceMember(vict, event.getGuild().getVoiceChannelById("818531386599538692")).submit();
+                CompletableFuture<Void> action = guild.moveVoiceMember(vict, guild.getVoiceChannelById("818531386599538692")).submit();
                 action.join(); // TODO: figure out why the join takes so long
             } catch (IllegalStateException e) {
 
             }
 
-            for (VoiceChannel vc : event.getGuild().getVoiceChannelsByName("ping", true)) {
+            for (VoiceChannel vc : guild.getVoiceChannelsByName("ping", true)) {
                 Molly.logger.info("Deleted channel " + vc.getName());
                 vc.delete().queue();
             }
 
-            for (VoiceChannel vc : event.getGuild().getVoiceChannelsByName("pong", true)) {
+            for (VoiceChannel vc : guild.getVoiceChannelsByName("pong", true)) {
                 Molly.logger.info("Deleted channel " + vc.getName());
                 vc.delete().queue();
             }

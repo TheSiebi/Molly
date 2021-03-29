@@ -1,25 +1,27 @@
 package commands;
 
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import org.jetbrains.annotations.NotNull;
 
+/**
+ * Super class of all SlashCommands containing relevant fields
+ */
 public class Command {
-    protected String[] args;
-    protected GuildMessageReceivedEvent event;
+    protected SlashCommandEvent event;
     protected Guild guild;
-    protected TextChannel textChannel;
-    protected User author;
+    protected MessageChannel textChannel;
 
-    public Command (String[] args, GuildMessageReceivedEvent event) {
-        this.args = args;
+    public Command (@NotNull SlashCommandEvent event) {
         this.event = event;
         this.guild = event.getGuild();
         this.textChannel = event.getChannel();
-        this.author = event.getAuthor();
     }
 
+    /**
+     * Method to be overwritten by each command
+     */
     public void run() {
         System.out.println("Not yet implemented.");
     }

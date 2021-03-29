@@ -1,13 +1,13 @@
 package components;
 
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import java.util.HashMap;
 
 public class Message {
     private HashMap<String, String> oldLeaveMessageID;
     private HashMap<String, String> oldJoinMessageID;
     private String summonMsgID;
-    private TextChannel channel;
+    private MessageChannel channel;
 
     /**
      * Constructs a new message instance which represents Molly's last "/summon" message in a channel.
@@ -16,7 +16,7 @@ public class Message {
      * @param msgID the ID of the "/summon" msg
      * @param channel the textchannel in which the "/summon" msg was sent
      */
-    public Message(String msgID, TextChannel channel) {
+    public Message(String msgID, MessageChannel channel) {
         this.summonMsgID = msgID;
         this.channel = channel;
         oldJoinMessageID = new HashMap<>();
