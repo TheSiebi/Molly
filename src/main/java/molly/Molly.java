@@ -6,7 +6,8 @@ import events.NicknameChangeEvent;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.security.auth.login.LoginException;
 
 /**
@@ -15,6 +16,7 @@ import javax.security.auth.login.LoginException;
 public class Molly {
 
     public static JDA jda;
+    public static Logger logger;
 
     /**
      * Main method initializing Molly
@@ -26,6 +28,7 @@ public class Molly {
         // Init
         String token = Token.getToken();
         jda = JDABuilder.createDefault(token).build();
+        logger = LoggerFactory.getLogger(Molly.class);
 
         // Add Listeners
         jda.addEventListener(new CommandHandler());

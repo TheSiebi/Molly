@@ -1,13 +1,13 @@
 package commands;
 
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import molly.Molly;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Annoy extends Command {
-    int num = 5; // default value
 
     public Annoy(String[] args, GuildMessageReceivedEvent event) {
         super(args, event);
@@ -18,80 +18,71 @@ public class Annoy extends Command {
      */
     @Override
     public void run() {
+
+        // Missing input
         if (args.length == 1) {
-            event.getChannel().sendMessage("Missing parameter: victim").queue();
+            textChannel.sendMessage("Missing parameter: victim").queue();
             return;
         }
 
-        // Setup
+        // Get user to annoy
         StringBuilder sb = new StringBuilder();
         sb.append(args[1]);
-
         for (int i = 2; i < args.length; i++) {
-            if (args[i].startsWith("-")) {
-                try {
-                    num = Integer.parseInt(args[i].substring(1));
-                } catch (NumberFormatException e) {
-                    event.getChannel().sendMessage("Gimme a correct number u fockin donkay").queue();
-                }
-            } else {
-                sb.append(" ").append(args[i]);
-            }
+            sb.append(" ").append(args[i]);
         }
-
         String victim = sb.toString();
 
-        if (!victim.equalsIgnoreCase("TheSiebi")) {
+        if (victim.equalsIgnoreCase("TheSiebi")) {
             Member vict;
 
+            // Check if user actually exists
             try {
-                vict = event.getGuild().getMembersByName(victim, true).get(0);
+                vict = guild.getMembersByName(victim, true).get(0);
             } catch (IndexOutOfBoundsException e) {
-                event.getChannel().sendMessage("Unknown user " + victim).queue();
+                textChannel.sendMessage("Unknown user " + victim).queue();
                 return;
             }
 
             AtomicReference<String> pingId = new AtomicReference<>();
             AtomicReference<String> pongId = new AtomicReference<>();
 
-            event.getGuild().createVoiceChannel("Ping").queue(voiceChannel -> pingId.set(voiceChannel.getId()));
-            event.getGuild().createVoiceChannel("Pong").queue(voiceChannel -> pongId.set(voiceChannel.getId()));
+            guild.createVoiceChannel("Ping").queue(voiceChannel -> pingId.set(voiceChannel.getId()));
+            guild.createVoiceChannel("Pong").queue(voiceChannel -> pongId.set(voiceChannel.getId()));
 
             // Busy wait until done
             while (pongId.get() == null || pingId.get() == null) ;
 
-            if (num > 100) {
-                event.getChannel().sendMessage("Whoa, that's too much, chill.").queue();
-                num = 5;
-            }
-
             // Annoy the poor fella
-            for (int i = 0; i < num; i++) {
+            for (int i = 0; i < 5; i++) {
                 try {
-                    event.getGuild().moveVoiceMember(vict, event.getGuild().getVoiceChannelById(pingId.get())).queue();
+                    guild.moveVoiceMember(vict, event.getGuild().getVoiceChannelById(pingId.get())).submit().join();
                     Thread.sleep(250);
-                    event.getGuild().moveVoiceMember(vict, event.getGuild().getVoiceChannelById(pongId.get())).queue();
+                    guild.moveVoiceMember(vict, event.getGuild().getVoiceChannelById(pongId.get())).submit().join();
                     Thread.sleep(250);
-                } catch (InterruptedException e) {
-                    System.out.println("Thread was somehow interrupted ¯\\_(ツ)_/¯"); // exception handling like a pro
-                }
+                } catch (Exception e) {}
             }
 
-            event.getGuild().moveVoiceMember(vict, event.getGuild().getVoiceChannelById("323918708559052810")).queue();
+            try {
+                CompletableFuture<Void> action = event.getGuild().moveVoiceMember(vict, event.getGuild().getVoiceChannelById("818531386599538692")).submit();
+                action.join(); // TODO: figure out why the join takes so long
+            } catch (IllegalStateException e) {
+
+            }
 
             for (VoiceChannel vc : event.getGuild().getVoiceChannelsByName("ping", true)) {
-                System.out.println(vc.getName());
+                Molly.logger.info("Deleted channel " + vc.getName());
                 vc.delete().queue();
             }
 
             for (VoiceChannel vc : event.getGuild().getVoiceChannelsByName("pong", true)) {
-                System.out.println(vc.getName());
+                Molly.logger.info("Deleted channel " + vc.getName());
                 vc.delete().queue();
             }
 
         } else {
-            event.getChannel().sendTyping().queue();
-            event.getChannel().sendMessage("Haha, you have no power here.").queue();
+            textChannel.sendTyping().queue();
+            textChannel.sendMessage("Haha, you have no power here.").queue();
         }
     }
 }

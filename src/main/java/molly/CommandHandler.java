@@ -31,9 +31,9 @@ public class CommandHandler extends ListenerAdapter {
         }
 
         String[] args = event.getMessage().getContentRaw().split("\\s+");
-        System.out.println(args[0]);
 
         if (args[0].startsWith(CommandHandler.prefix)) { // Check if prefix is correct
+            Molly.logger.info("User " + event.getAuthor().getName() + " tried to invoke " + args[0].substring(1).toLowerCase());
             switch (args[0].substring(1).toLowerCase()) {
                 case "info":
                     new Info(args, event).run();

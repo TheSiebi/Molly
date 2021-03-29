@@ -1,6 +1,8 @@
 package commands;
 
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.requests.RestAction;
 
 public class Pong extends Command {
     public Pong (String[] args, GuildMessageReceivedEvent event) {
@@ -14,11 +16,17 @@ public class Pong extends Command {
     public void run() {
         event.getChannel().sendTyping().queue();
 
+        RestAction<Message> action;
         double x = Math.random();
+
         if (x <= 0.1) {
-            event.getChannel().sendMessage("Ouch, that hurt!").queue();
+            action = textChannel.sendMessage("Ouch, that hurt!");
         } else {
-            event.getChannel().sendMessage("Pong! :ping_pong:").queue();
+            action = textChannel.sendMessage("Pong! :ping_pong:");
         }
+
+        final long t0 = System.currentTimeMillis();
+        Message message = action.complete();
+        message.editMessage(message.getContentDisplay() + " (" + (System.currentTimeMillis() - t0) + " ms)").queue(); // End with queue() to not block the callback thread!
     }
 }
