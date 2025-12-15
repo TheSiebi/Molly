@@ -2,15 +2,17 @@ package commands;
 
 import molly.Molly;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Annoy extends Command {
 
-    public Annoy(String[] args, GuildMessageReceivedEvent event) {
-        super(args, event);
+    public Annoy(SlashCommandInteractionEvent event) {
+        super(event);
     }
 
     /**
@@ -18,29 +20,23 @@ public class Annoy extends Command {
      */
     @Override
     public void run() {
-
-        // Missing input
-        if (args.length == 1) {
-            textChannel.sendMessage("Missing parameter: victim").queue();
+        // Get user to annoy from slash command option
+        OptionMapping userOption = event.getOption("user");
+        
+        if (userOption == null) {
+            event.reply("Missing parameter: user").setEphemeral(true).queue();
             return;
         }
 
-        // Get user to annoy
-        StringBuilder sb = new StringBuilder();
-        sb.append(args[1]);
-        for (int i = 2; i < args.length; i++) {
-            sb.append(" ").append(args[i]);
-        }
-        String victim = sb.toString();
-
-        if (victim.equalsIgnoreCase("TheSiebi")) {
-            Member vict;
-
-            // Check if user actually exists
-            try {
-                vict = guild.getMembersByName(victim, true).get(0);
-            } catch (IndexOutOfBoundsException e) {
-                textChannel.sendMessage("Unknown user " + victim).queue();
+        User victimUser = userOption.getAsUser();
+        
+        if (victimUser.getName().equalsIgnoreCase("TheSiebi")) {
+            event.deferReply().queue();
+            
+            Member vict = guild.getMember(victimUser);
+            
+            if (vict == null) {
+                event.getHook().editOriginal("User not found in this server!").queue();
                 return;
             }
 
@@ -65,7 +61,7 @@ public class Annoy extends Command {
 
             try {
                 CompletableFuture<Void> action = event.getGuild().moveVoiceMember(vict, event.getGuild().getVoiceChannelById("818531386599538692")).submit();
-                action.join(); // TODO: figure out why the join takes so long
+                action.join();
             } catch (IllegalStateException e) {
 
             }
@@ -79,10 +75,11 @@ public class Annoy extends Command {
                 Molly.logger.info("Deleted channel " + vc.getName());
                 vc.delete().queue();
             }
+            
+            event.getHook().editOriginal("Mission accomplished! 😈").queue();
 
         } else {
-            textChannel.sendTyping().queue();
-            textChannel.sendMessage("Haha, you have no power here.").queue();
+            event.reply("Haha, you have no power here.").setEphemeral(true).queue();
         }
     }
 }

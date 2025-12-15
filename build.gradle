@@ -7,14 +7,17 @@ version '1.0'
 
 repositories {
     mavenCentral()
-    jcenter()
+    maven {
+        name 'm2-dv8tion'
+        url 'https://m2.dv8tion.net/releases'
+    }
 }
 
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-    compile 'net.dv8tion:JDA:4.2.0_238'
-    compile("ch.qos.logback:logback-classic:1.2.3")
+    implementation('net.dv8tion:JDA:5.2.2')
+    implementation("ch.qos.logback:logback-classic:1.4.14")
 }
 
 test {
@@ -22,13 +25,15 @@ test {
 }
 
 jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
     manifest {
         attributes "Main-Class": "molly.Molly"
     }
 
     from {
         configurations
-                .compile
+                .runtimeClasspath
                 .findAll { !it.name.endsWith('pom') }
                 .collect { it.isDirectory() ? it : zipTree(it) }
     }

@@ -3,3 +3,4 @@ src/main/java/molly/Token.java
 out/
 .gradle/
 build/
+.claude/

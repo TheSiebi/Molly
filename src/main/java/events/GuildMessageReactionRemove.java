@@ -2,7 +2,7 @@ package events;
 
 import molly.CommandHandler;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionRemoveEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,11 +10,14 @@ import java.util.Random;
 
 public class GuildMessageReactionRemove extends ListenerAdapter {
     @Override
-    public void onGuildMessageReactionRemove(@NotNull GuildMessageReactionRemoveEvent event) {
+    public void onMessageReactionRemove(@NotNull MessageReactionRemoveEvent event) {
+        if (!event.isFromGuild()) {
+            return;
+        }
 
         User remover = event.retrieveUser().complete(); // if we don't load the user first, it possibly returns null
 
-        if (event.getReactionEmote().getAsCodepoints().equals(CommandHandler.summonReaction) && !remover.isBot()) {
+        if (event.getEmoji().getAsReactionCode().equals(CommandHandler.summonReaction) && !remover.isBot()) {
 
             String id = event.getMessageId();
             event.getChannel().sendTyping().queue();
